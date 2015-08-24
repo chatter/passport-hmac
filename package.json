@@ -1,0 +1,22 @@
+{
+  "name": "passport-hmac",
+  "version": "0.0.1",
+  "description": "HMAC authentication strategy for Passport",
+  "main": "./lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "passport",
+    "strategy",
+    "hmac"
+  ],
+  "author": "Curtis Hatter",
+  "license": "MIT",
+  "dependencies": {
+    "passport-strategy": "^1.0.0"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  }
+}
