@@ -18,6 +18,13 @@
     "name": "Curtis Hatter",
     "email": "mitchell.hatter@gmail.com",
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chatter/passport-hmac.git"
+  },
+  "bugs": {
+    "url": "http://github.com/chatter/passport-twitter/issues"
+  },
   "license": "MIT",
   "licenses": [
     {
