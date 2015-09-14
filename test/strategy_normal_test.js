@@ -1,6 +1,6 @@
 var chai = require('chai');
 var Strategy = require('../lib/strategy');
-var CryptoJS = require ('crypto-js');
+var CryptoJS = require('crypto-js');
 
 describe('Strategy', function() {
   var keys = { publicKey: 'public-key', privateKey: 'private-key' };
@@ -56,7 +56,7 @@ describe('Strategy', function() {
     });
   });
 
-  describe('handling a request with bad authorization header', function() {
+  describe('handling a request with malformed authorization header', function() {
     var info;
 
     before(function(done) {
@@ -77,7 +77,7 @@ describe('Strategy', function() {
     });
   });
 
-  describe('handling a request with bad public key', function() {
+  describe('handling a request with bad public key in authorization header', function() {
     before(function(done) {
       chai.passport.use(strategy)
         .fail(function(i) {
@@ -90,9 +90,31 @@ describe('Strategy', function() {
         .authenticate();
     });
 
-    it('should fail with bad user message', function() {
+    it('should fail with bad credentials message', function() {
       expect(info).to.be.a.string;
       expect(info.message).to.equal('Bad credentials');
+    });
+  });
+
+  describe('handling a request with bad signature', function() {
+    var info;
+
+    before(function(done) {
+      chai.passport.use(strategy)
+        .fail(function(i) {
+          info = i;
+          done();
+        })
+        .req(function(req) {
+          req.headers.date = new Date().toUTCString();
+          req.headers.authorization = 'Hmac ' + keys.publicKey + ':dGhpcyBpcyBhIHRlc3Q=';
+        })
+        .authenticate();
+    });
+
+    it('should fail with bad signature message in authorization header', function() {
+      expect(info).to.be.a.string;
+      expect(info.message).to.equal('Bad signature');
     });
   });
 });
