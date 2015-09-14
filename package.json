@@ -2,9 +2,6 @@
   "name": "passport-hmac",
   "version": "1.0.0",
   "description": "HMAC authentication strategy for Passport",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "passport",
     "strategy",
@@ -16,7 +13,7 @@
   ],
   "author": {
     "name": "Curtis Hatter",
-    "email": "mitchell.hatter@gmail.com",
+    "email": "mitchell.hatter@gmail.com"
   },
   "repository": {
     "type": "git",
@@ -39,5 +36,13 @@
   },
   "engines": {
     "node": ">= 0.4.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "chai-passport-strategy": "^0.2.0",
+    "mocha": "^2.3.2"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*_test.js"
   }
 }
