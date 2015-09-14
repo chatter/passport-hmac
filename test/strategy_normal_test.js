@@ -3,17 +3,17 @@ var Strategy = require('../lib/strategy');
 var CryptoJS = require ('crypto-js');
 
 describe('Strategy', function() {
+  var keys = { publicKey: 'public-key', privateKey: 'private-key' };
+
+  var strategy = new Strategy(function(publicKey, done) {
+    if (publicKey === keys.publicKey) {
+      return done(null, {id: '1234', name: 'Test'}, keys.privateKey, { scope: 'read'});
+    }
+
+    return done(null, false);
+  });
+
   describe('handling a request with valid credentials', function() {
-    var keys = { publicKey: 'public-key', privateKey: 'private-key' };
-
-    var strategy = new Strategy(function(publicKey, done) {
-      if (publicKey === keys.publicKey) {
-        return done(null, {id: '1234', name: 'Test'}, keys.privateKey, { scope: 'read'});
-      }
-
-      return done(null, false);
-    });
-
     var user;
     var info;
 
@@ -33,8 +33,8 @@ describe('Strategy', function() {
             CryptoJS.HmacSHA1(
               unescape(encodeURIComponent(
                 req.method + '\n' +
-                CryptoJS.MD5(req.body) + '\n' + // MD5 of req.body
-                req.headers['content-type'] + '\n' + // Content-Type header
+                CryptoJS.MD5(req.body) + '\n' +
+                req.headers['content-type'] + '\n' +
                 req.headers.date
               )),
               keys.privateKey
@@ -53,6 +53,46 @@ describe('Strategy', function() {
     it('should supply info', function() {
       expect(info).to.be.an.object;
       expect(info.scope).to.equal('read');
+    });
+  });
+
+  describe('handling a request with bad authorization header', function() {
+    var info;
+
+    before(function(done) {
+      chai.passport.use(strategy)
+        .fail(function(i) {
+          info = i;
+          done();
+        })
+        .req(function(req) {
+          req.headers.authorization = 'Hmac bad_public_key';
+        })
+        .authenticate();
+    });
+
+    it('should fail with bad authorization message', function() {
+      expect(info).to.be.a.string;
+      expect(info.message).to.equal('Bad authorization header');
+    });
+  });
+
+  describe('handling a request with bad public key', function() {
+    before(function(done) {
+      chai.passport.use(strategy)
+        .fail(function(i) {
+          info = i;
+          done();
+        })
+        .req(function(req) {
+          req.headers.authorization = 'Hmac bad_public_key:dGhpcyBpcyBhIHRlc3Q=';
+        })
+        .authenticate();
+    });
+
+    it('should fail with bad user message', function() {
+      expect(info).to.be.a.string;
+      expect(info.message).to.equal('Bad credentials');
     });
   });
 });
