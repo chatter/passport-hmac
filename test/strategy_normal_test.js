@@ -17,42 +17,82 @@ describe('Strategy', function() {
     var user;
     var info;
 
-    before(function(done) {
-      chai.passport.use(strategy)
-        .success(function(u, i) {
-          user = u;
-          info = i;
-          done();
-        })
-        .req(function(req) {
-          req.body = {name: 'Test', body: 'Include UTF8 data: 🐶🐮'};
-          req.headers['content-type'] = 'application/json';
-          req.headers.date = new Date().toUTCString();
+    describe('with json content', function() {
+      before(function(done) {
+        chai.passport.use(strategy)
+          .success(function(u, i) {
+            user = u;
+            info = i;
+            done();
+          })
+          .req(function(req) {
+            req.body = {name: 'Test', body: 'Include UTF8 data: 🐶🐮'};
+            req.headers['content-type'] = 'application/json';
+            req.headers.date = new Date().toUTCString();
 
-          var encString = CryptoJS.enc.Base64.stringify(
-            CryptoJS.HmacSHA1(
-              unescape(encodeURIComponent(
-                req.method + '\n' +
-                CryptoJS.MD5(JSON.stringify(req.body)) + '\n' +
-                req.headers['content-type'] + '\n' +
-                req.headers.date
-              )),
-              keys.privateKey
-          ));
+            var encString = CryptoJS.enc.Base64.stringify(
+              CryptoJS.HmacSHA1(
+                unescape(encodeURIComponent(
+                  req.method + '\n' +
+                  CryptoJS.MD5(JSON.stringify(req.body)) + '\n' +
+                  req.headers['content-type'] + '\n' +
+                  req.headers.date
+                )),
+                keys.privateKey
+            ));
 
-          req.headers.authorization = 'Hmac ' + keys.publicKey + ':' + encString;
-        })
-        .authenticate();
+            req.headers.authorization = 'Hmac ' + keys.publicKey + ':' + encString;
+          })
+          .authenticate();
+      });
+
+      it('should supply user', function() {
+        expect(user).to.be.an.object;
+        expect(user.id).to.equal('1234');
+      });
+
+      it('should supply info', function() {
+        expect(info).to.be.an.object;
+        expect(info.scope).to.equal('read');
+      });
     });
 
-    it('should supply user', function() {
-      expect(user).to.be.an.object;
-      expect(user.id).to.equal('1234');
-    });
+    describe('without json content', function() {
+      before(function(done) {
+        chai.passport.use(strategy)
+          .success(function(u, i) {
+            user = u;
+            info = i;
+            done();
+          })
+          .req(function(req) {
+            req.headers.date = new Date().toUTCString();
 
-    it('should supply info', function() {
-      expect(info).to.be.an.object;
-      expect(info.scope).to.equal('read');
+            var encString = CryptoJS.enc.Base64.stringify(
+              CryptoJS.HmacSHA1(
+                unescape(encodeURIComponent(
+                  req.method + '\n' +
+                  '' + '\n' +
+                  '' + '\n' +
+                  req.headers.date
+                )),
+                keys.privateKey
+            ));
+
+            req.headers.authorization = 'Hmac ' + keys.publicKey + ':' + encString;
+          })
+          .authenticate();
+      });
+
+      it('should supply user', function() {
+        expect(user).to.be.an.object;
+        expect(user.id).to.equal('1234');
+      });
+
+      it('should supply info', function() {
+        expect(info).to.be.an.object;
+        expect(info.scope).to.equal('read');
+      });
     });
   });
 
