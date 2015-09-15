@@ -1,6 +1,4 @@
-[ ![Codeship Status for chatter/passport-hmac](https://codeship.com/projects/fcf8b260-3d6a-0133-c3bb-22d459b325ce/status?branch=master)](https://codeship.com/projects/102505)
-
-[![Coverage Status](https://coveralls.io/repos/chatter/passport-hmac/badge.svg?branch=master&service=github)](https://coveralls.io/github/chatter/passport-hmac?branch=master)
+[![Codeship Status for chatter/passport-hmac](https://codeship.com/projects/fcf8b260-3d6a-0133-c3bb-22d459b325ce/status?branch=master)](https://codeship.com/projects/102505) [![Code Climate](https://codeclimate.com/github/chatter/passport-hmac/badges/gpa.svg)](https://codeclimate.com/github/chatter/passport-hmac) [![Test Coverage](https://codeclimate.com/github/chatter/passport-hmac/badges/coverage.svg)](https://codeclimate.com/github/chatter/passport-hmac/coverage) [![Coverage Status](https://coveralls.io/repos/chatter/passport-hmac/badge.svg?branch=master&service=github)](https://coveralls.io/github/chatter/passport-hmac?branch=master)
 
 # passport-hmac
 HMAC authentication strategy for [Passport](http://passportjs.org).
