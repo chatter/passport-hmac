@@ -1,4 +1,5 @@
 [![Codeship Status for chatter/passport-hmac](https://codeship.com/projects/fcf8b260-3d6a-0133-c3bb-22d459b325ce/status?branch=master)](https://codeship.com/projects/102505) [![Code Climate](https://codeclimate.com/github/chatter/passport-hmac/badges/gpa.svg)](https://codeclimate.com/github/chatter/passport-hmac) [![Test Coverage](https://codeclimate.com/github/chatter/passport-hmac/badges/coverage.svg)](https://codeclimate.com/github/chatter/passport-hmac/coverage) [![Coverage Status](https://coveralls.io/repos/chatter/passport-hmac/badge.svg?branch=master&service=github)](https://coveralls.io/github/chatter/passport-hmac?branch=master)
+[![Dependencies](https://david-dm.org/chatter/passport-hmac.svg)](https://david-dm.org/chatter/passport-hmac)
 
 # passport-hmac
 HMAC authentication strategy for [Passport](http://passportjs.org).
@@ -42,6 +43,13 @@ StringToSign = HTTP-Verb + "\n" +
 	Content-Type + "\n" +
 	Date + "\n";
 ```
+
+The elements in `StrinToSign` are positional in nature. The names of the headers
+are not included, only their values. If a positional header is not present in
+the request (for example, `Content-Type` or `Content-MD5` are meaningless in a
+GET request), substitute an empty string for that position.
+
+TODO: implement Time Stamp Requirement
 
 ## Install
 
