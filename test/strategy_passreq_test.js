@@ -26,7 +26,7 @@ describe('Strategy', function() {
             done();
           })
           .req(function(req) {
-            req.body = JSON.stringify({name: 'Test', body: 'Include UTF8 data: 🐶🐮'});
+            req.body = {name: 'Test', body: 'Include UTF8 data: 🐶🐮'};
             req.headers['content-type'] = 'application/json';
             req.headers.date = new Date().toUTCString();
             req.headers['x-foo'] = 'hello';
@@ -35,7 +35,7 @@ describe('Strategy', function() {
               CryptoJS.HmacSHA1(
                 unescape(encodeURIComponent(
                   req.method + '\n' +
-                  CryptoJS.MD5(req.body) + '\n' +
+                  CryptoJS.MD5(JSON.stringify(req.body)) + '\n' +
                   req.headers['content-type'] + '\n' +
                   req.headers.date
                 )),
