@@ -3,6 +3,7 @@
 ![Coveralls](https://img.shields.io/coveralls/chatter/passport-hmac.svg)
 ![Dependencies](https://img.shields.io/david/chatter/passport-hmac.svg)
 ![devDependencies](https://img.shields.io/david/dev/chatter/passport-hmac.svg)
+![License](https://img.shields.io/npm/l/passport-hmac.svg)
 
 # passport-hmac
 HMAC authentication strategy for [Passport](http://passportjs.org).
