@@ -157,4 +157,18 @@ describe('Strategy', function() {
       expect(info.message).to.equal('Bad signature');
     });
   });
+
+  describe('handling a request with a missing authorization header', function() {
+    it('should fail with a missing authorization header message', function(done) {
+      chai.passport.use(strategy)
+        .fail(function(i) {
+          info = i;
+          done();
+        })
+        .req(function(req) {
+          req.headers.date = new Date().toUTCString();
+        })
+        .authenticate();
+    });
+  });
 });
