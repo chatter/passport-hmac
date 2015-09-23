@@ -6,6 +6,7 @@ examples/
 reports/
 support/
 test/
+coverage/
 
 # Node.js
 .npmignore
