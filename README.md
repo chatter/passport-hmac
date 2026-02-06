@@ -31,7 +31,7 @@ The second piece is the _public key_, that typically is provided by the
 _identifier_ of the service being authenticated against.
 
 The _signature_ is the final piece and is a
-[RFC 2104 HMAC-SHA1](https://www.ietf.org/rfc/rfc2104.txt) of selected parts of
+[RFC 2104 HMAC-SHA256](https://www.ietf.org/rfc/rfc6151.txt) of selected parts of
 the request. If the request signature calculated by the service matches the
 _signature_ provided in the _authentication_ header, the requester will have
 shown they have possession of the _identifier_'s secret access key.
@@ -40,7 +40,7 @@ Following is psuedogrammer adapted from AWS Signature 2 documentation.
 ```
 Authorization = "identifier" + " " + publicKey + ":" + signature;
 
-signature = Base64( HMAC-SHA1( YourSecretAccessKeyID, UTF-8-Encoding-Of( StringToSign ) ) );
+signature = Base64( HMAC-SHA256( YourSecretAccessKeyID, UTF-8-Encoding-Of( StringToSign ) ) );
 
 StringToSign = HTTP-Verb + "\n" +
 	Content-MD5 + "\n" +

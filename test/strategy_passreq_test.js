@@ -32,7 +32,7 @@ describe('Strategy', function() {
             req.headers['x-foo'] = 'hello';
 
             var encString = CryptoJS.enc.Base64.stringify(
-              CryptoJS.HmacSHA1(
+              CryptoJS.HmacSHA256(
                 unescape(encodeURIComponent(
                   req.method + '\n' +
                   CryptoJS.MD5(JSON.stringify(req.body)) + '\n' +
